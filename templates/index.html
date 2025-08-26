@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Face Detection Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script>
+    link
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Face Detection (upload or webcam)</h1>
+
+    <section class="card">
+      <h2>Upload image</h2>
+      <form id="uploadForm">
+        <input type="text" id="uploadUsername" name="username" placeholder="username (optional)" />
+        <input type="file" name="image" id="fileInput" accept="image/*" />
+        <button type="submit">Upload & Detect</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Webcam (capture)</h2>
+      <div class="row">
+        <video id="video" autoplay playsinline></video>
+        <div>
+          <input type="text" id="camUsername" placeholder="username (optional)" />
+          <button id="captureBtn">Capture & Detect</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Result</h2>
+      <div id="result">
+        <p id="status">No result yet</p>
+        <div id="annotatedWrapper"></div>
+        <div id="facesWrapper" class="thumbs"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
