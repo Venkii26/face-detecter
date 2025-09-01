@@ -10,7 +10,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATASET_DIR = os.path.join(BASE_DIR, "dataset")
 os.makedirs(DATASET_DIR, exist_ok=True)
 
-# Load Haar cascade
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 if face_cascade.empty():
     raise RuntimeError("Failed to load haarcascade. Check your OpenCV installation.")
@@ -22,7 +21,7 @@ def read_image_from_file_storage(fs):
     return img
 
 def read_image_from_base64(data_url):
-    # accepts "data:image/jpeg;base64,..." or raw base64
+    
     if data_url.startswith("data:"):
         header, data = data_url.split(",", 1)
     else:
@@ -43,16 +42,14 @@ def index():
 
 @app.route("/detect", methods=["POST"])
 def detect():
-    # determine incoming image
     img = None
     username = None
 
-    # 1) multipart upload
     if "image" in request.files and request.files["image"].filename != "":
         img = read_image_from_file_storage(request.files["image"])
         username = request.form.get("username", None)
     else:
-        # 2) JSON or form with base64 (used by webcam capture)
+
         data = None
         if request.is_json:
             data = request.get_json()
@@ -77,7 +74,7 @@ def detect():
         cv2.rectangle(annotated, (x, y), (x + w, y + h), (0, 255, 0), 2)
         face_crop = img[y:y+h, x:x+w]
 
-        # optionally save to dataset/<username> if username provided
+        
         if username:
             user_dir = os.path.join(DATASET_DIR, username)
             os.makedirs(user_dir, exist_ok=True)
@@ -97,5 +94,4 @@ def detect():
     })
 
 if __name__ == "__main__":
-    # accessible at http://127.0.0.1:5000
     app.run(debug=True)
